@@ -1,0 +1,83 @@
+// THEMIFY
+// -------
+// Loops through each theme within $themes to create a variable that
+// can be used output values stored within it.
+//
+// - $attr  : <string> 
+//      Attribute selector for theme. Defaults null. 
+//      When given, selector defaults to &[data-#{$attr}]
+//      When null, selector defaults to #{theme} &
+//      
+// - $themes: <map>
+//      Map for which themes are location. Defaults to $themes
+//
+// Note: When a new property is added, you have to define the theme color like
+// in the examples below. (Until Sass allows us to create dynamic variables...)
+// =======
+
+$current-theme: null !default;
+
+@mixin themify($attr: null, $themes: $themes) {
+  @each $theme, $map in $themes {
+    // Define current theme
+    $current-theme: map-get($themes, $theme) !global;
+
+    // Themify 
+    @if $attr == null {
+      .#{$theme} & { @content; }
+    } @else {
+      &[data-#{$attr}="#{$theme}"] { @content; }
+    }
+
+    // reset current theme
+    $current-theme: null !global;
+  }
+}
+
+@function theme($query, $theme: $current-theme) {
+  @return map-get($theme, $query);
+}
+
+// Themify example
+// ---------------
+// There are two possible outputs for the themify mixin. 
+// 1) It outputs the theme as a parent selector 
+// 2) It outputs the theme as an attribute
+//
+// Example 1: Standard Themify by outputting the theme as the parent selector
+// ---------------
+// Input
+// .standard-themify {
+//   @include themify() {
+//     color: theme(color);
+//     background: theme(background);
+//   }
+// }
+//
+// Output
+// .theme1 .standard-themify {
+//   color: #2FD1AF; }
+
+// .theme2 .standard-themify {
+//   color: #4FA4DD; }
+//
+// Example 2: Output the theme as an attribute
+// ---------------
+// Input
+// .attribute-themify {
+//   @include themify(theme) {
+//     color: theme(color);
+//     background: theme(background);
+//   }
+// }
+//
+// Output:
+// .attribute-themify[data-theme="theme1"] {
+//   color: #2FD1AF;
+//   background: #FBFCFC; 
+// }
+
+// .attribute-themify[data-theme="theme2"] {
+//   color: #4FA4DD;
+//   background: #FBFCFC;
+// }

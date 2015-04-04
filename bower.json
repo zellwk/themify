@@ -1,0 +1,19 @@
+{
+  "name": "themify",
+  "version": "0.1.0",
+  "homepage": "https://github.com/zellwk/themify",
+  "authors": [
+    "Zell Liew <zellwk@gmail.com>"
+  ],
+  "main": "_themify.scss",
+  "description": "Sass Mixin to create multiple themes easily",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ]
+}
